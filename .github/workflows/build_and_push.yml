@@ -1,0 +1,30 @@
+name: Build and push Docker image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          target: cimage-deps
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+          build-args: |
+            NUM_BUILD_CORES=4
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
