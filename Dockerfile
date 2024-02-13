@@ -65,3 +65,5 @@ RUN <<-EOF
     Rscript /tmp/cimage_deps.R
     rm /tmp/cimage_deps.R
 EOF
+
+LABEL org.opencontainers.image.source https://github.com/radusuciu/docker-cimage-base
