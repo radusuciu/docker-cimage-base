@@ -34,7 +34,6 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         r-base=${R_VERSION}* \
-        r-base-dev=${R_VERSION}* \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -42,11 +41,13 @@ RUN apt-get update \
 ### dependencies for cimage ###
 FROM r-base as cimage-deps
 ARG NUM_BUILD_CORES
+ARG R_VERSION
 
 RUN apt-get update \ 
   && apt-get install -y --no-install-recommends --no-install-suggests \
     # general
     build-essential \
+    r-base-dev=${R_VERSION}* \
     # cimage
     gfortran \
     netcdf-bin \
