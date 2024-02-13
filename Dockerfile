@@ -37,6 +37,8 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+LABEL org.opencontainers.image.source https://github.com/radusuciu/docker-cimage-base
+
 
 ### dependencies for cimage ###
 FROM r-base as cimage-deps
@@ -66,8 +68,6 @@ RUN <<-EOF
     Rscript /tmp/cimage_deps.R
     rm /tmp/cimage_deps.R
 EOF
-
-LABEL org.opencontainers.image.source https://github.com/radusuciu/docker-cimage-base
 
 
 ### now we copy the dependencies to a new image that can be used as a runtime base ###
