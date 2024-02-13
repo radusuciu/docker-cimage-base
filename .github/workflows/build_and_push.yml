@@ -17,6 +17,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test that dependencies were successfully installed
+        uses: docker/build-push-action@v5
+        with:
+          target: cimage-deps-test
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Test that dependencies still work in the runtime stage
+        uses: docker/build-push-action@v5
+        with:
+          target: cimage-runtime-test
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Build and push
         uses: docker/build-push-action@v5
         with:

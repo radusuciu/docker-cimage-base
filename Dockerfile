@@ -67,3 +67,32 @@ RUN <<-EOF
 EOF
 
 LABEL org.opencontainers.image.source https://github.com/radusuciu/docker-cimage-base
+
+
+### now we copy the dependencies to a new image that can be used as a runtime base ###
+FROM r-base as cimage-runtime
+
+RUN apt-get update \ 
+  && apt-get install -y --no-install-recommends --no-install-suggests \
+    # cimage runtime deps
+    libglpk40 \
+    netcdf-bin \
+    libxml2 \
+    libnetcdf-dev \
+    imagemagick \
+    pdftk \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY --from=cimage-deps /usr/local/lib/R/ /usr/local/lib/R/
+COPY --from=cimage-deps /usr/lib/R/ /usr/lib/R/
+COPY --from=cimage-deps /usr/share/R/ /usr/share/R/
+
+
+### testing that we correctly installed xcms and limma ###
+FROM cimage-deps as cimage-deps-test
+RUN Rscript -e "library(xcms)" -e "library(limma)"
+
+
+### testing that xcms and limma still work with the runtime deps ###
+FROM cimage-runtime as cimage-runtime-test
+RUN Rscript -e "library(xcms)" -e "library(limma)"
