@@ -1,4 +1,4 @@
-ARG R_VERSION=4.3.2
+ARG R_VERSION=4.3.3
 ARG NUM_BUILD_CORES=4
 
 FROM debian:bullseye-slim as r-base
