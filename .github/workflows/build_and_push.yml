@@ -46,7 +46,7 @@ jobs:
           target: cimage-deps
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/docker-cimage-base:R${{ env.r_version }}
+            ghcr.io/${{ github.repository_owner }}/docker-cimage-base:${{ env.r_version }}
             ghcr.io/${{ github.repository_owner }}/docker-cimage-base:latest
           build-args: |
             NUM_BUILD_CORES=4
@@ -59,7 +59,7 @@ jobs:
           target: cimage-runtime
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/docker-cimage-runtime:R${{ env.r_version }}}
+            ghcr.io/${{ github.repository_owner }}/docker-cimage-runtime:${{ env.r_version }}}
             ghcr.io/${{ github.repository_owner }}/docker-cimage-runtime:latest
           build-args: |
             NUM_BUILD_CORES=4
@@ -72,7 +72,7 @@ jobs:
           target: r-base
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/docker-cimage-r-base:R${{ env.r_version }}}
+            ghcr.io/${{ github.repository_owner }}/docker-cimage-r-base:${{ env.r_version }}}
             ghcr.io/${{ github.repository_owner }}/docker-cimage-r-base:latest
           build-args: |
             NUM_BUILD_CORES=4

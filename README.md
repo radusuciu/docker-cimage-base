@@ -8,3 +8,5 @@ Potentially relevant links:
 - https://github.com/cravattlab/cimage-minimal
 - https://github.com/radusuciu/cimage-simple
 - https://github.com/cravattlab/cravatt-docker/tree/master/cimage_base
+
+Images are versioned according to the R version that they were built with.
