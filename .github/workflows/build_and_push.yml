@@ -2,6 +2,9 @@ name: Build and push Docker image
 
 on:
   workflow_dispatch:
+  
+env:
+  r_version: 4.3.3
 
 jobs:
   build_and_push:
@@ -22,6 +25,9 @@ jobs:
         with:
           target: cimage-deps-test
           load: true
+          build-args: |
+            NUM_BUILD_CORES=4
+            R_VERSION=${{ env.r_version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Test that dependencies still work in the runtime stage
@@ -29,16 +35,47 @@ jobs:
         with:
           target: cimage-runtime-test
           load: true
+          build-args: |
+            NUM_BUILD_CORES=4
+            R_VERSION=${{ env.r_version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Build and push
+      - name: Build and push base image
         uses: docker/build-push-action@v5
         with:
           target: cimage-deps
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository_owner }}/docker-cimage-base:R${{ env.r_version }}
+            ghcr.io/${{ github.repository_owner }}/docker-cimage-base:latest
           build-args: |
             NUM_BUILD_CORES=4
+            R_VERSION=${{ env.r_version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build and push runtime image
+        uses: docker/build-push-action@v5
+        with:
+          target: cimage-runtime
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/docker-cimage-runtime:R${{ env.r_version }}}
+            ghcr.io/${{ github.repository_owner }}/docker-cimage-runtime:latest
+          build-args: |
+            NUM_BUILD_CORES=4
+            R_VERSION=${{ env.r_version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build and push R base
+        uses: docker/build-push-action@v5
+        with:
+          target: r-base
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/docker-cimage-r-base:R${{ env.r_version }}}
+            ghcr.io/${{ github.repository_owner }}/docker-cimage-r-base:latest
+          build-args: |
+            NUM_BUILD_CORES=4
+            R_VERSION=${{ env.r_version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
