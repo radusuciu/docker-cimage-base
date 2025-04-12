@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   
 env:
-  r_version: 4.4.3
+  r_version: 4.5.0
 
 jobs:
   build_and_push:
