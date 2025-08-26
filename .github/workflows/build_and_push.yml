@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   
 env:
-  r_version: 4.5.0
+  r_version: 4.5.1
 
 jobs:
   build_and_push:
@@ -21,7 +21,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Test that dependencies were successfully installed
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           target: cimage-deps-test
           load: true
@@ -31,7 +31,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Test that dependencies still work in the runtime stage
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           target: cimage-runtime-test
           load: true
@@ -41,7 +41,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Build and push base image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           target: cimage-deps
           push: true
@@ -54,7 +54,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Build and push runtime image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           target: cimage-runtime
           push: true
@@ -67,7 +67,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Build and push R base
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           target: r-base
           push: true
